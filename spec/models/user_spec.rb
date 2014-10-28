@@ -5,70 +5,34 @@ RSpec.describe User, :type => :model do
 
   describe "validations" do
     context "when invalid user" do
-      before(:each) { user.valid? }
+      it { is_expected.to validate_presence_of :full_name }
 
-      it "ensures a session_token" do
-        expect(user.session_token).not_to be_nil
-      end
+      it { is_expected.to validate_presence_of :username }
+      it { is_expected.to validate_uniqueness_of :username }
 
-      it "validates presence of full_name" do
-        expect(user.errors[:full_name]).to include("can't be blank")
-      end
+      it { is_expected.to validate_presence_of :email }
+      it { is_expected.to validate_uniqueness_of :email }
 
-      it "validates presence of username" do
-        expect(user.errors[:username]).to include("can't be blank")
-      end
+      it { is_expected.to validate_presence_of :password_digest }
+      it { is_expected.to ensure_length_of(:password).is_at_least 6 }
+      it { is_expected.to allow_value(nil).for(:password) }
 
-      it "validates presence of email" do
-        expect(user.errors[:email]).to include("can't be blank")
-      end
-
-      it "validates presence of password_digest" do
-        expect(user.errors[:password_digest]).to include("can't be blank")
-      end
-
-      it "allows nil password" do
-        expect(user.errors[:password]).to be_empty
-      end
-
-      it "validates length of password" do
-        user.password = "abcde"
-        user.valid?
-        expect(user.errors[:password]).to include("is too short (minimum is 6 characters)")
-      end
-
-      let(:saved_user) do
-        User.create!({
-          full_name: "Full Name",
-          username: "username",
-          email:    "user@example.com",
-          password: "abcdef"
-        })
-      end
-
-      it "validates uniqueness of username" do
-        user.username = saved_user.username
-        user.valid?
-        expect(user.errors[:username]).to include("has already been taken")
-      end
-
-      it "validates uniqueness of email" do
-        user.email = saved_user.email
-        user.valid?
-        expect(user.errors[:email]).to include("has already been taken")
-      end
+      it { is_expected.to validate_uniqueness_of :session_token }
     end
 
     context "when valid user" do
-      it "can save to database" do
+      before(:each) do
         user.full_name = "Full Name"
         user.username  = "username"
         user.email     = "user@example.com"
         user.password  = "abcdef"
+      end
 
-        user.save!
+      it { is_expected.to be_valid }
 
-        expect(user.id).not_to be_nil
+      it "ensures it has a session_token" do
+        user.valid?
+        expect(user.session_token).not_to be_nil
       end
     end
   end
@@ -99,5 +63,9 @@ RSpec.describe User, :type => :model do
         expect(User.find_by_credentials(*credentials).id).to eq(user.id)
       end
     end
+  end
+
+  describe "associations" do
+    it { is_expected.to have_many(:authored_tweets).class_name("Tweet").with_foreign_key(:author_id) }
   end
 end

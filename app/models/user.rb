@@ -1,9 +1,11 @@
 class User < ActiveRecord::Base
-  validates :username, :email, presence: true, uniqueness: true
+  validates :username, :email, :session_token, presence: true, uniqueness: true
   validates :full_name, :password_digest, presence: true
   validates :password, length: { minimum: 6, allow_nil: true }
 
   before_validation :ensure_session_token
+
+  has_many :authored_tweets, class_name: "Tweet", foreign_key: :author_id
 
   def self.generate_session_token
     loop do

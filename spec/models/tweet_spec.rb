@@ -4,21 +4,33 @@ RSpec.describe Tweet, :type => :model do
   subject(:tweet) {Tweet.new}
   describe "validations" do
     context "when invalid tweet" do
-      before(:each) { tweet.valid? }
+      it { is_expected.to validate_presence_of :author }
+      it { is_expected.to validate_presence_of :content }
 
-      it "validates presence of author" do
-        expect(tweet.errors[:author]).to include("can't be blank")
-      end
+      it { is_expected.to ensure_length_of(:content).is_at_most 140 }
+    end
 
-      it "validates presence of content" do
-        expect(tweet.errors[:content]).to include("can't be blank")
-      end
+    context "when valid tweet" do
+      it "can save to database" do
+        user = User.create!({
+          full_name: "Full Name",
+          username: "username",
+          email: "user@example.com",
+          password: "password"
+        })
 
-      it "validates length of content" do
-        tweet.content = "a" * 141
-        tweet.valid?
-        expect(tweet.errors[:content]).to include("is too long (maximum is 140 characters)")
+        tweet.author_id = user.id
+        tweet.content = "a" * 140
+        tweet.save
+
+        expect(tweet).to be_persisted
       end
     end
+  end
+
+  describe "associations" do
+    it { is_expected.to belong_to(:author).class_name("User") }
+    it { is_expected.to belong_to(:conversation_parent).class_name("Tweet") }
+    it { is_expected.to belong_to(:conversation_root).class_name("Tweet") }
   end
 end
