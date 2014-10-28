@@ -1,0 +1,54 @@
+<% action_url = user.persisted? ? user_url(user) : users_url %>
+<% form_method = user.persisted? ? "PATCH" : "POST" %>
+<% submit_text = user.persisted? ? "Update Your Account" : "Sign Up" %>
+
+
+<form action="<%= action_url %>" method="POST" accept-charset="utf-8">
+  <input
+    type="hidden"
+    name="authenticity_token"
+    value="<%= form_authenticity_token %>">
+  <input
+    type="hidden"
+    name="_method"
+    value="<%= form_method %>"
+  >
+
+  <label>
+    Full Name
+    <input
+      type="text"
+      name="user[full_name]"
+      value="<%= user.full_name%>"
+      >
+  </label>
+
+  <label>
+    Username
+    <input
+      type="text"
+      name="user[username]"
+      value="<%= user.username%>"
+      >
+  </label>
+
+  <label>
+    Email
+    <input
+      type="text"
+      name="user[email]"
+      value="<%= user.email%>"
+      >
+  </label>
+
+  <label>
+    Password
+    <input
+      type="password"
+      name="user[password]"
+      value=""
+      >
+  </label>
+
+  <button><%= submit_text %></button>
+</form>

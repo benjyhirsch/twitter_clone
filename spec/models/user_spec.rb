@@ -11,6 +11,10 @@ RSpec.describe User, :type => :model do
         expect(user.session_token).not_to be_nil
       end
 
+      it "validates presence of full_name" do
+        expect(user.errors[:full_name]).to include("can't be blank")
+      end
+
       it "validates presence of username" do
         expect(user.errors[:username]).to include("can't be blank")
       end
@@ -35,6 +39,7 @@ RSpec.describe User, :type => :model do
 
       let(:saved_user) do
         User.create!({
+          full_name: "Full Name",
           username: "username",
           email:    "user@example.com",
           password: "abcdef"
@@ -55,10 +60,11 @@ RSpec.describe User, :type => :model do
     end
 
     context "when valid user" do
-      it "should be able to save to database" do
-        user.username = "username"
-        user.email    = "user@example.com"
-        user.password = "abcdef"
+      it "can save to database" do
+        user.full_name = "Full Name"
+        user.username  = "username"
+        user.email     = "user@example.com"
+        user.password  = "abcdef"
 
         user.save!
 
@@ -68,21 +74,30 @@ RSpec.describe User, :type => :model do
   end
 
   describe('#password=') do
-    it "should hash and salt passwords" do
-      one_user = User.new({
-        username: "user1",
-        email:    "oneuser@example.com",
-        password: "abcdef"
-      })
+    it "hashes and salts passwords" do
+      user.password = "abcdef"
+      other_user = User.new({password: "abcdef"})
 
-      other_user = User.new({
-        username: "user2",
-        email:    "otheruser@example.com",
-        password: "abcdef"
-      })
-
-      expect(one_user.password_digest.to_s)
+      expect(user.password_digest.to_s)
         .not_to eq(other_user.password_digest.to_s)
+    end
+  end
+
+  describe('::find_by_credentials') do
+    before(:each) do
+      user.full_name = "Full Name"
+      user.username  = "username"
+      user.email     = "user@example.com"
+      user.password  = "abcdef"
+
+      user.save!
+    end
+
+    it "finds correct user given valid credentials" do
+      [ ["username", "abcdef"], ["user@example.com", "abcdef"] ]
+      .each do |credentials|
+        expect(User.find_by_credentials(*credentials).id).to eq(user.id)
+      end
     end
   end
 end
