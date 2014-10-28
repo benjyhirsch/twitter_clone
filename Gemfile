@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.3'
+ruby '2.1.1'
 
 gem 'rails', '4.1.4'
 gem 'pg'
@@ -32,5 +32,5 @@ group :test do
 end
 
 group :production do
-  gem '12factor_rails'
+  gem 'rails_12factor'
 end
