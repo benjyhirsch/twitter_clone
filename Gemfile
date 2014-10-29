@@ -24,6 +24,7 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
+  gem 'annotate'
 end
 
 group :test do

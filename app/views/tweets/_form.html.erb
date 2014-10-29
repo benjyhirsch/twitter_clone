@@ -1,0 +1,4 @@
+<form action="<%= tweets_url %>" method="POST">
+  <%= hidden_form_inputs("DELETE") %>
+  <textarea name="tweet[content]"><%= tweet.content %></textarea>
+</form>

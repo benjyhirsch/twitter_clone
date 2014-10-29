@@ -66,6 +66,6 @@ RSpec.describe User, :type => :model do
   end
 
   describe "associations" do
-    it { is_expected.to have_many(:authored_tweets).class_name("Tweet").with_foreign_key(:author_id) }
+    it { is_expected.to have_many(:tweets).class_name("Tweet").with_foreign_key(:author_id) }
   end
 end

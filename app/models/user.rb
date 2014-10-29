@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   before_validation :ensure_session_token
 
-  has_many :authored_tweets, class_name: "Tweet", foreign_key: :author_id
+  has_many :tweets, class_name: "Tweet", foreign_key: :author_id
 
   def self.generate_session_token
     loop do
@@ -34,6 +34,14 @@ class User < ActiveRecord::Base
   def reset_session_token!
     self.session_token = User.generate_session_token
     save!
+  end
+
+  def root_tweets
+    tweets.where("tweets.conversation_root_id = tweets.id")
+  end
+
+  def reply(tweet)
+    tweets.new(conversation_parent: tweet, content: "@#{tweet.author.username } ")
   end
 
   private

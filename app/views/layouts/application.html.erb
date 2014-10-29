@@ -7,7 +7,25 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<header>
+  <ul>
+    <li><a href="<%= root_url %>">Home</a></li>
+    <li>LOGO</li>
+    <% if logged_in? %>
+      <li>
+        <%= current_user.full_name %>
+        <ul>
+          <li><a href="<%= user_url(current_user) %>">View Profile</a></li>
+          <li>
+            <form action="<%= session_url %>" method="POST">
+              <input type="hidden" name="authenticity_token">
+            </form>
+          </li>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+</header>
 <%= yield %>
 
 </body>
