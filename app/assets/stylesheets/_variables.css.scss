@@ -1,0 +1,48 @@
+$logo-color: rgb(85, 172, 238);
+$link-color: #0084b4;
+
+$main-button-bg: rgb(51, 156, 195);
+$main-button-bg-hover: linear-gradient(to bottom, rgb(0,130, 178), rgb(0,112,153));
+$main-button-bg-active: rgb(0, 132, 180);
+
+$text-color: #292F33;
+$lighter-text-color: #66757F;
+$lightest-text-color: #8C9CA9;
+
+
+$border-color: #E1E8ED;
+
+$main-bg-color: #C0DEED;
+$main-tweet-bg-color: #FFFFFF;
+$secondary-bg-color: #F5F8FA;
+$form-bg-color: #E5F2F7;
+$form-border-color: #C0E1ED;
+
+$retweet-color: rgb(92, 145, 59);
+$favorite-color: rgb(255, 172, 51);
+$inactive-color: #CCD6DD;
+
+
+$site-width: 890px;
+$sidebar-width: 290px;
+$padding: 12px;
+
+$largest-font-size: rem(22);
+$large-font-size: rem(17);
+$base-font-size: rem(14);
+$small-font-size: rem(13);
+$smaller-font-size: rem(12);
+$smallest-font-size: rem(11);
+
+$light-font-weight: 300;
+$bold-font-weight: 500;
+
+$navbar-height: 46px;
+$navbar-vertical-padding: 7px;
+$navbar-line-height: $navbar-height - 2 * $navbar-vertical-padding;
+
+$border-radius: 5px;
+
+@mixin box-shadow {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}

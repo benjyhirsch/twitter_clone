@@ -4,9 +4,16 @@ class Tweet < ActiveRecord::Base
   validates :author, presence: true
   validates :content, presence: true, length: {maximum: 140}
   validates :conversation_root, presence: true
+  validates :original_tweeting, presence: true
+  before_validation :ensure_original_tweeting
   before_validation :ensure_conversation_root
 
-  belongs_to :author, class_name: "User"
+  belongs_to :author, class_name: "User", inverse_of: :tweets
+  has_one :original_tweeting,
+    -> { where user_id: author_id },
+    class_name: "Tweeting",
+    dependent: :destroy
+  has_many :tweetings, dependent: :destroy
 
   belongs_to :conversation_parent,
     class_name: "Tweet",
@@ -21,11 +28,17 @@ class Tweet < ActiveRecord::Base
     inverse_of: :conversation_descendants_as_root
   has_many :conversation_descendants_as_root,
     class_name: "Tweet", foreign_key: "conversation_root_id",
-    inverse_of: :conversation_descendants_as_root
+    inverse_of: :conversation_root
 
   has_many :conversation_relatives,
     through: :conversation_root,
     source: :conversation_descendants_as_root
+
+  has_many :tweetings, dependent: :destroy, inverse_of: :tweet
+  has_many :tweetinging_users, through: :tweetings, source: :user
+
+  has_many :favorites, dependent: :destroy, inverse_of: :tweet
+  has_many :favoriting_users, through: :favorites, source: :user
 
   def conversation_parent=(conversation_parent)
     self.conversation_root_id = conversation_parent.conversation_root_id
@@ -33,12 +46,13 @@ class Tweet < ActiveRecord::Base
   end
 
   def conversation_parent_id=(conversation_parent_id)
-    conversation_parent = Tweet.find(conversation_parent_id)
-    self.conversation_parent = conversation_parent
+      conversation_parent = Tweet.find(conversation_parent_id)
+      self.conversation_parent = conversation_parent
   end
 
   def conversation_descendants
-    @conversation_descendants ||= conversation_descendants_hash.keys.sort_by do |descendant|
+    # @conversation_descendants ||=
+    conversation_descendants_hash.keys.sort_by do |descendant|
       -1 * descendant.created_at.to_f
     end
   end
@@ -65,26 +79,36 @@ class Tweet < ActiveRecord::Base
     conversation_ancestors.map(&:id)
   end
 
-  private
+  def new_reply
+    replies.new(content: "@#{author.username}")
+  end
+
+  # private
   def ensure_conversation_root
     unless conversation_root || conversation_root_id
       self.conversation_root = self
     end
   end
 
+  def ensure_original_tweeting
+    unless original_tweeting
+      self.original_tweeting = Tweeting.new(tweet: self, user: author)
+    end
+  end
+
   def conversation_descendants_hash
-    return @conversation_descendants_hash if @conversation_descendants_hash
+    # return @conversation_descendants_hash if @conversation_descendants_hash
+    hash = Hash.new
 
     conversation_relatives.load.scoping do
-      hash = Hash.new
       queue = self.replies.to_a
       until queue.empty?
         current_descendant = queue.shift
         hash[current_descendant] = current_descendant.replies
         queue += current_descendant.replies
       end
-
-      hash
     end
+
+    hash
   end
 end

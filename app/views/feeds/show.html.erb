@@ -1,0 +1,18 @@
+<main>
+  <section class="sidebar">
+    <section class="widget dashboard-user-widget">
+      <div class="user-info">
+        <a href="<%= user_url(current_user) %>" class="user-full-name"><%= current_user.full_name %></a>
+        <a href="<%= user_url(current_user) %>" class="user-username">@<%= current_user.username %></a>
+      </div>
+      <%= render partial: "tweets/form", locals: { tweet: Tweet.new }%>
+    </section>
+  </section>
+
+  <section class="stream">
+  <header class="stream-header">Tweets</header>
+  <% current_user.feed.each do |tweet| %>
+    <%= render partial: 'tweets/tweet', locals: { tweet: tweet } %>
+  <% end %>
+  </section>
+</main>

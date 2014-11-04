@@ -11,10 +11,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141028203935) do
+ActiveRecord::Schema.define(version: 20141030190405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "favorites", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "tweet_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "favorites", ["tweet_id"], name: "index_favorites_on_tweet_id", using: :btree
+  add_index "favorites", ["user_id", "created_at"], name: "index_favorites_on_user_id_and_created_at", order: {"created_at"=>:desc}, using: :btree
+  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
+
+  create_table "follows", force: true do |t|
+    t.integer  "follower_id"
+    t.integer  "followee_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "follows", ["followee_id"], name: "index_follows_on_followee_id", using: :btree
+  add_index "follows", ["follower_id"], name: "index_follows_on_follower_id", using: :btree
+
+  create_table "tweetings", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "tweet_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tweetings", ["tweet_id"], name: "index_tweetings_on_tweet_id", using: :btree
+  add_index "tweetings", ["user_id", "created_at"], name: "index_tweetings_on_user_id_and_created_at", order: {"created_at"=>:desc}, using: :btree
+  add_index "tweetings", ["user_id"], name: "index_tweetings_on_user_id", using: :btree
 
   create_table "tweets", force: true do |t|
     t.integer  "author_id"

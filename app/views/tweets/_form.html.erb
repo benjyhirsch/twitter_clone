@@ -1,4 +1,7 @@
-<form action="<%= tweets_url %>" method="POST">
-  <%= hidden_form_inputs("DELETE") %>
-  <textarea name="tweet[content]"><%= tweet.content %></textarea>
-</form>
+<%= form_for tweet, html: {class: "tweet-form"} do %>
+  <% if tweet.conversation_parent_id %>
+    <input type="hidden" name="tweet[conversation_parent_id]" value="<%= tweet.conversation_parent_id %>">
+  <% end %>
+  <textarea name="tweet[content]" placeholder="<%= tweet.conversation_parent_id ? "Reply to @#{tweet.conversation_parent.author.username}" : "Compose a tweet..."%>"><%= tweet.content %></textarea>
+  <button class="tweet-button">Tweet</button>
+<% end %>

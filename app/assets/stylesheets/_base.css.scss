@@ -1,0 +1,25 @@
+body {
+  font-family: $helvetica;
+  font-size: $base-font-size;
+  line-height: em(20);
+  padding-top: $navbar-height;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  background: $main-bg-color;
+}
+
+a {
+  color: $link-color;
+}
+
+button, input[type="submit"], input[type="button"] {
+  box-shadow: 0;
+  border: 0;
+  border-radius: $border-radius;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:active, &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,11 @@
+<main class="stream tweet-show-stream">
+<% @tweet.conversation_ancestors.reverse_each do |ancestor| %>
+  <%= render partial: 'tweet', locals: {tweet: ancestor, secondary: true} %>
+<% end %>
+
+<%= render partial: 'tweet', locals: {tweet: @tweet, expanded: true} %>
+
+<% @tweet.conversation_descendants.reverse_each do |descendant| %>
+  <%= render partial: 'tweet', locals: {tweet: descendant, secondary: true} %>
+<% end %>
+</main>

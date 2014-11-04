@@ -1,0 +1,305 @@
+.navbar {
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  z-index: 1000;
+  position: fixed;
+  background: white;
+  top: 0;
+  width: 100%;
+  height: $navbar-height;
+  font-size: $small-font-size;
+  font-weight: $bold-font-weight;
+  line-height: $navbar-line-height;
+
+  & > nav {
+    @include clearfix;
+    max-width: $site-width;
+    padding: $navbar-vertical-padding 0;
+    margin: 0 auto;
+
+    & > .left {
+      float: left;
+    }
+
+    & > .right {
+      float: right;
+    }
+  }
+
+  a {
+    display: block;
+  }
+
+  .logo {
+    font-size: $base-font-size;
+    color: $logo-color;
+    margin: 0 auto;
+    padding: 0;
+    width: 100px;
+  }
+
+  & > nav > ul {
+    @include clearfix;
+
+    & > li {
+      float: left;
+      & + li {
+        margin-left: 15px;
+      }
+    }
+  }
+}
+
+.dropdown {
+  & > ul {
+    display: none;
+    background: white;
+    width: 158px;
+    position: absolute;
+    top: 100%;
+    border-radius: $border-radius;
+    @include box-shadow;
+    z-index: 1001;
+
+    & > li {
+      padding: 10px;
+    }
+
+    button {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    & > li:not(:last-child) {
+      border-bottom: 1px solid $border-color;
+    }
+  }
+
+  &:hover > ul {
+    display: block
+  }
+}
+
+
+.tweet-button {
+  height: $navbar-line-height;
+  padding: 0 10px;
+  background: $main-button-bg;
+  color: white;
+}
+
+.tweet-button:hover {
+  @include background( $main-button-bg-hover);
+}
+
+.tweet-button:active {
+  background: $main-button-bg-active;
+}
+
+
+
+main {
+  @include clearfix;
+  width: $site-width;
+  margin: 0 auto;
+  padding: $padding 0
+}
+
+.sidebar {
+  float: left;
+  width: $sidebar-width;
+}
+
+.stream {
+  float: right;
+  width: $site-width - $sidebar-width - $padding;
+  margin-left: $padding;
+  border-radius: $border-radius;
+}
+
+.tweet-show-stream {
+  float: none;
+  margin: 0 auto;
+
+  & > .tweet:first-child {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
+}
+
+.stream-header {
+  background: white;
+  font-weight: $light-font-weight;
+  font-size: $largest-font-size;
+  line-height: 1;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  border-bottom: 1px solid $border-color;
+  border: 1px solid $border-color;
+  padding: $padding;
+  color: $lighter-text-color;
+}
+
+.tweet {
+  background: $main-tweet-bg-color;
+  border: 1px solid $border-color;
+  border-top: 0;
+  padding: $padding;
+  cursor: pointer;
+  &:hover {
+    background: $secondary-bg-color;
+  }
+}
+
+.tweet:last-child {
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+}
+
+.tweet.secondary {
+  background: $secondary-bg-color;
+}
+
+.tweet > header {
+  & > a > strong {
+    color: $text-color;
+    font-weight: bold;
+  }
+
+  & > a:hover > strong {
+    text-decoration: underline;
+    color: $link-color;
+  }
+
+  & small, & small > a {
+    color: $lightest-text-color;
+    font-size: $small-font-size;
+  }
+}
+
+.tweet > footer {
+  padding-top: $padding;
+
+  & > form {
+    display: inline-block;
+    padding-right: 30px;
+  }
+}
+
+.transparent-button {
+  display: inline;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  line-height: inherit;
+}
+
+.retweet-button {
+  font-size: $small-font-size;
+  color: $lightest-text-color;
+
+  .fa-retweet {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  &:hover, &:hover > .fa-retweet, &.retweeted, &.retweeted > .fa-retweet {
+    color: $retweet-color;
+  }
+}
+
+.favorite-button {
+  font-size: $small-font-size;
+  color: $lightest-text-color;
+
+  .fa-star {
+    color: $inactive-color;
+    font-size: 16px;
+    line-height: 1;
+    padding-right: 7px;
+  }
+
+
+  &:hover, &:hover > .fa-star, &.favorited, &.favorited > .fa-star {
+    color: $favorite-color;
+  }
+}
+
+.tweet-form {
+  @include clearfix;
+  background: $form-bg-color;
+  padding: $padding;
+  border: 1px solid $form-border-color;
+  & > textarea {
+    box-sizing: border-box;
+    border-radius: $border-radius;
+    resize: none;
+    width: 100%;
+    outline: none;
+    font: inherit;
+    padding: 8px;
+    height: 37px;
+    border: 1px solid $form-border-color;
+
+    &:focus {
+      min-height: 100px;
+    }
+  }
+
+  & > .tweet-button {
+    margin-top: 7px;
+    float: right;
+    display: none;
+  }
+
+  & textarea:focus + .tweet-button {
+    display: block;
+  }
+}
+
+.tweet + .tweet-form {
+  border-color: $border-color;
+  border-top: 0;
+}
+
+.widget {
+  border-radius: $border-radius;
+  background: white;
+}
+
+.dashboard-user-widget {
+  & > .user-info {
+    padding: $padding;
+
+    & > .user-full-name {
+      display: block;
+      color: $text-color;
+      font-size: $large-font-size;
+      font-weight: bold;
+      line-height: 21px;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    & > .user-username {
+      display: block;
+      color: $lighter-text-color;
+      font-size: $small-font-size;
+      line-height: 16px;
+      &:hover {
+        color: $link-color;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  & > .tweet-form {
+      border-bottom-left-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+    }
+}
+
+

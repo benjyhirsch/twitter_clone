@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Tweet, :type => :model do
   subject(:tweet) {Tweet.new}
 
-  context "when invalid tweet" do
+  describe "validations" do
     it { is_expected.to validate_presence_of :author }
     it { is_expected.to validate_presence_of :content }
 
@@ -33,11 +33,13 @@ RSpec.describe Tweet, :type => :model do
 
       it "assigns the appropriate conversation_root" do
 
-        child = user.reply(tweet)
+        child = tweet.new_reply
+        child.author = user
         child.content += "b" * 130
         child.save!
 
-        grandchild = user.reply(child)
+        grandchild = child.new_reply
+        grandchild.author = user
         grandchild.content += "c" * 130
         grandchild.save!
 
@@ -70,7 +72,8 @@ RSpec.describe Tweet, :type => :model do
 
       context "when it has a direct reply" do
         let!(:child) do
-          child = user.reply(tweet)
+          child = tweet.new_reply
+          child.author = user
           child.content += "b" * 130
           child.save!
           child
@@ -86,7 +89,8 @@ RSpec.describe Tweet, :type => :model do
 
         context "when another child" do
           let!(:sibling) do
-            sibling = user.reply(tweet)
+            sibling = tweet.new_reply
+            sibling.author = user
             sibling.content += "c" * 130
             sibling.save!
             sibling
@@ -110,7 +114,8 @@ RSpec.describe Tweet, :type => :model do
 
           context "when another generation" do
             let!(:grandchild) do
-              grandchild = user.reply(child)
+              grandchild = child.new_reply
+              grandchild.author = user
               grandchild.content += "d" * 130
               grandchild.save!
               grandchild

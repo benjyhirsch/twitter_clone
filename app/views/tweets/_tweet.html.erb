@@ -1,0 +1,39 @@
+<% expanded ||= false %>
+<% secondary ||= false %>
+<% reply ||= false %>
+
+<% author = tweet.author %>
+<% retweet = Tweeting.find_by(user: current_user, tweet: tweet) %>
+<% favorite = Favorite.find_by(user: current_user, tweet: tweet) %>
+
+
+<article class="tweet<%= " expanded" if expanded %><%= " secondary" if secondary %><%= " reply" if reply %>">
+  <header>
+  <a class="tweet-author-info" href="<%= user_url(author) %>"><strong><%= author.full_name %></strong>
+    <small>@<%= author.username %></small></a>
+    <small>&middot;
+    <a class="tweet-timestamp" href=<%= tweet_url(tweet) %>><%= timeago_tag tweet.created_at, format: "%b %e" %></a></small>
+  </header>
+  <%= tweet.content %>
+  <footer>
+    <form action="<%= retweet ? retweet_url(retweet) : retweets_url %>" method="POST">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="<%= retweet ? "DELETE" : "POST" %>">
+      <input type="hidden" name="tweeting[tweet_id]" value="<%= tweet.id %>">
+      <button <% "disabled " if author.id == current_user.id %> class="transparent-button retweet-button"<%=" retweeted" if retweet %>><i class="fa fa-retweet"></i><%= tweet.tweetings.length - 1 unless tweet.tweetings.length - 1 == 0 %></button>
+    </form>
+
+    <form action="<%= favorite ? favorite_url(favorite) : favorites_url %>" method="POST">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="<%= favorite ? "DELETE" : "POST" %>">
+      <input type="hidden" name="favorite[tweet_id]" value="<%= tweet.id %>">
+      <button class="transparent-button favorite-button"<%=" favorited" if favorite %>><i class="fa fa-star"></i><%= tweet.favorites.length unless tweet.favorites.length == 0 %></button>
+    </form>
+  </footer>
+
+</article>
+<% if expanded && logged_in? %>
+  <%= render partial: 'tweets/form', locals: {
+    tweet: Tweet.new({author: current_user, conversation_parent: tweet})
+  } %>
+<% end %>

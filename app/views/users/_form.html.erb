@@ -1,10 +1,4 @@
-<% action_url = user.persisted? ? user_url(user) : users_url %>
-<% form_method = user.persisted? ? "PATCH" : "POST" %>
-<% submit_text = user.persisted? ? "Update Your Account" : "Sign Up" %>
-
-
-<form action="<%= action_url %>" method="POST" accept-charset="utf-8">
-  <%= hidden_form_inputs(form_method) %>
+<%= form_for user do %>
 
   <label>
     Full Name
@@ -42,5 +36,5 @@
       >
   </label>
 
-  <button><%= submit_text %></button>
-</form>
+  <button><%= user.persisted? ? "Update Your Account" : "Sign Up" %></button>
+<% end %>
