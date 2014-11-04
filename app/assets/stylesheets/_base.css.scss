@@ -23,3 +23,15 @@ button, input[type="submit"], input[type="button"] {
     outline: none;
   }
 }
+
+textarea, input[type="text"], input[type="password"] {
+  box-sizing: border-box;
+  border-radius: $border-radius;
+  resize: none;
+  width: 100%;
+  outline: none;
+  font: inherit;
+  padding: 8px;
+  height: 37px;
+  border: 1px solid $border-color;
+}

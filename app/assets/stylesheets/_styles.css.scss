@@ -82,6 +82,13 @@
   }
 }
 
+.signin-form, .signup-form {
+  width: 500px;
+  padding: $padding;
+  background: #fff;
+  margin: $padding auto;
+  border-radius: $border-radius
+}
 
 .tweet-button {
   height: $navbar-line-height;
@@ -233,15 +240,8 @@ main {
   padding: $padding;
   border: 1px solid $form-border-color;
   & > textarea {
-    box-sizing: border-box;
-    border-radius: $border-radius;
-    resize: none;
-    width: 100%;
-    outline: none;
-    font: inherit;
-    padding: 8px;
     height: 37px;
-    border: 1px solid $form-border-color;
+    border-color: $form-border-color;
 
     &:focus {
       min-height: 100px;
