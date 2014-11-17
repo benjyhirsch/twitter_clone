@@ -1,4 +1,23 @@
 Rails.application.routes.draw do
+  namespace :api do
+    resources :users, only: [:show, :create, :update, :destroy] do
+      resources :tweets, only: [:index]
+      resources :followers, only: [:index]
+      resources :followees, only: [:index]
+      resources :favorites, only: [:index]
+      resource :follow, only: [:create, :destroy]
+    end
+
+    resource :session, only: [:create, :destroy, :show]
+    resource :feed, only: [:show]
+
+    resources :tweets, only: [:show, :create, :destroy] do
+      resource :favorite, only: [:create, :destroy]
+      resource :retweet, only: [:create, :destroy]
+    end
+  end
+
+
   resources :users
   resource :session, only: [:new, :create, :destroy]
   resource :feed, only: [:show]
@@ -8,5 +27,5 @@ Rails.application.routes.draw do
   resources :retweets, only: [:create, :destroy]
   resources :favorites, only: [:create, :destroy]
 
-  root 'feeds#show'
+  root 'root#root'
 end

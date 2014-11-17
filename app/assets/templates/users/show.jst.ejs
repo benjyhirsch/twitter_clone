@@ -1,14 +1,12 @@
-<main>
-  <section class="sidebar">
-    <section class="widget dashboard-user-widget">
-      <div class="user-info">
-        <a href="<%= "#/users/" + user.id %>" class="user-full-name"><%= user.full_name %></a>
-        <a href="<%= "#/users/" + user.id %>" class="user-username">@<%= user.username %></a>
-      </div>
-    </section>
+<section class="sidebar">
+  <section class="widget user-widget profile-user-widget">
+    <div class="user-info">
+      <a href="<%= '#/users/' + TwitterClone.currentUser.id %>" class="user-full-name"><%= TwitterClone.currentUser.escape("full_name") %></a>
+      <a href="<%= '#/users/' + TwitterClone.currentUser.id %>" class="user-username">@<%= TwitterClone.currentUser.escape("username") %></a>
+    </div>
+    <div class="dashboard-tweet-form"></div>
   </section>
+</section>
 
-  <section class="stream">
-  <header class="stream-header">Tweets</header>
-  </section>
-</main>
+<section class="stream-container">
+</section>

@@ -1,18 +1,28 @@
-class FavoritesController < ApplicationController
+class Api::FavoritesController < ApplicationController
+  before_action :ensure_logged_in
+
   def create
-    tweet_id = params[:favorite][:tweet_id]
-    @favorite = Favorite.new(user: current_user, tweet_id: tweet_id)
-    @favorite.save
-    redirect_to tweet_url(tweet_id)
+    @favorite = Favorite.new(user: current_user, tweet_id: params[:tweet_id])
+    if @favorite.save
+      render json: @favorite
+    else
+      render json: @favorite.errors, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    @favorite = Favorite.includes(:tweet).find(params[:id])
-    if current_user.id == @favorite.user_id
-      @favorite.destroy
-      redirect_to tweet_url(@favorite.tweet)
+    @favorite = Favorite.find_by(user: current_user, tweet_id: params[:tweet_id])
+    if @favorite && @favorite.destroy
+      render json: @favorite
     else
-      redirect_to tweet_url(@favorite.tweet)
+      render json: @favorite.errors, status: :forbidden
+    end
+  end
+
+  private
+  def ensure_logged_in
+    unless logged_in?
+      render nothing: true, status: :forbidden
     end
   end
 end

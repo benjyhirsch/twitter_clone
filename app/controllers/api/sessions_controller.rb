@@ -1,5 +1,5 @@
-class SessionsController < ApplicationController
-  def new
+class Api::SessionsController < ApplicationController
+  def show
   end
 
   def create
@@ -11,15 +11,15 @@ class SessionsController < ApplicationController
 
     if user
       login(user)
-      redirect_to root_url
+      redirect_to api_user_url(user)
     else
-      render :new
+      render nothing: true, status: :unprocessable_entity
     end
   end
 
   def destroy
     session[:session_token] = nil
-    redirect_to new_session_url
+    render nothing: true
   end
 
   private

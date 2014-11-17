@@ -2,3 +2,4 @@ json.(user, :id, :username, :full_name, :email, :created_at, :updated_at, :websi
 json.num_tweets user.tweetings.length
 json.num_followers user.followers.length
 json.num_followees user.followees.length
+json.num_favorites user.favorites.length

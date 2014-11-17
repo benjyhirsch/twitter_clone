@@ -1,3 +1,18 @@
+body {
+  padding-top: $navbar-height;
+  background-image: image-url('bg.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: left $navbar-height;
+  box-sizing: border-box;
+  background-color: $main-bg-color;
+}
+
+#backbone {
+  height: 100%;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
 .navbar {
   box-sizing: border-box;
   border-bottom: 1px solid rgba(0,0,0,0.15);
@@ -90,18 +105,22 @@
   border-radius: $border-radius
 }
 
-.tweet-button {
-  height: $navbar-line-height;
+.main-button {
   padding: 0 10px;
   background: $main-button-bg;
   color: white;
 }
 
-.tweet-button:hover {
+.navbar button {
+  height: $navbar-line-height;
+  line-height: $navbar-line-height;
+}
+
+.main-button:hover {
   @include background( $main-button-bg-hover);
 }
 
-.tweet-button:active {
+.main-button:active {
   background: $main-button-bg-active;
 }
 
@@ -126,13 +145,21 @@ main {
   border-radius: $border-radius;
 }
 
+.tweet-show > .stream {
+  float: none;
+  margin: 0 auto;
+}
+
+.tweet-show .main-tweet {
+
+}
+
 .tweet-show-stream {
   float: none;
   margin: 0 auto;
 
   & > .tweet:first-child {
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
+    @include rounded-top;  
   }
 }
 
@@ -141,8 +168,7 @@ main {
   font-weight: $light-font-weight;
   font-size: $largest-font-size;
   line-height: 1;
-  border-top-left-radius: $border-radius;
-  border-top-right-radius: $border-radius;
+  @include rounded-top;
   border-bottom: 1px solid $border-color;
   border: 1px solid $border-color;
   padding: $padding;
@@ -154,15 +180,18 @@ main {
   border: 1px solid $border-color;
   border-top: 0;
   padding: $padding;
-  cursor: pointer;
-  &:hover {
-    background: $secondary-bg-color;
-  }
 }
 
-.tweet:last-child {
-  border-bottom-left-radius: $border-radius;
-  border-bottom-right-radius: $border-radius;
+.main-tweet {
+  cursor: pointer;
+}
+
+.tweet-show .main-tweet {
+  cursor: auto;
+}
+
+.conversation:not(.expanded) > .main-tweet > .tweet:hover {
+  background: $secondary-bg-color;
 }
 
 .tweet.secondary {
@@ -195,6 +224,20 @@ main {
   }
 }
 
+.tweet-figure {
+  border-radius: $border-radius;
+  max-height: 256px;
+  margin-top: $padding;
+  overflow: hidden;
+}
+
+.expanded > .main-tweet .tweet-figure {
+  max-height: none;
+  border-radius: 0;
+}
+
+
+
 .transparent-button {
   display: inline;
   background: transparent;
@@ -206,14 +249,20 @@ main {
 .retweet-button {
   font-size: $small-font-size;
   color: $lightest-text-color;
+  padding-right: 20px;
 
   .fa-retweet {
     font-size: 16px;
     line-height: 1;
+    padding-right: 5px;
   }
 
-  &:hover, &:hover > .fa-retweet, &.retweeted, &.retweeted > .fa-retweet {
+  &:not(:disabled):hover, &:not(:disabled):hover > .fa-retweet, &.retweeted, &.retweeted > .fa-retweet {
     color: $retweet-color;
+  }
+
+  &:disabled {
+    cursor: auto;
   }
 }
 
@@ -225,7 +274,7 @@ main {
     color: $inactive-color;
     font-size: 16px;
     line-height: 1;
-    padding-right: 7px;
+    padding-right: 5px;
   }
 
 
@@ -242,24 +291,51 @@ main {
   & > textarea {
     height: 37px;
     border-color: $form-border-color;
+  }
 
-    &:focus {
-      min-height: 100px;
+  & > .controls {
+    height: $tweet-form-controls-height;
+    line-height: $tweet-form-controls-height;
+    font-size: $base-font-size;
+    margin-top: 7px;
+    display: none;
+    @include clearfix;
+    & > .right-controls {
+      float: right;
+      @include clearfix;
+      & > li {
+        float: left;
+        margin-left: $padding;
+      }
+    }
+
+    & > .left-controls {
+      float: left;
+      @include clearfix;
+      & > li {
+        float: right;
+        margin-right: $padding;
+      }
     }
   }
 
-  & > .tweet-button {
-    margin-top: 7px;
-    float: right;
-    display: none;
+  &.active > textarea {
+    min-height: 100px;
   }
-
-  & textarea:focus + .tweet-button {
+    
+  &.active > .controls {
     display: block;
   }
 }
 
-.tweet + .tweet-form {
+.chars-remaining {
+  line-height: $tweet-form-controls-height;
+  &.chars-remaining-warning {
+    color: $red;
+  }
+}
+
+.reply-form > .tweet-form {
   border-color: $border-color;
   border-top: 0;
 }
@@ -269,9 +345,12 @@ main {
   background: white;
 }
 
-.dashboard-user-widget {
+.user-widget {
   & > .user-info {
     padding: $padding;
+    border: 1px solid $border-color;
+    border-bottom: none;
+    @include rounded-top;
 
     & > .user-full-name {
       display: block;
@@ -296,10 +375,37 @@ main {
     }
   }
 
-  & > .tweet-form {
-      border-bottom-left-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
+  & .tweet-form {
+      @include rounded-bottom;
     }
 }
 
+.reply-form, .ancestors, .descendants {
+  display: none;
+}
 
+.expanded > .reply-form, .expanded > .ancestors, .expanded > .descendants {
+  display: block;
+}
+
+.conversation:not(:first-child) .top-of-expanded, .tweet-show .top-of-expanded, .conversation:not(.expanded) .top-after-expanded {
+  @include rounded-top;
+}
+
+.bottom-of-expanded, .conversation:not(.expanded) .bottom-before-expanded {
+  @include rounded-bottom;
+}
+
+.expanded {
+  &:not(:first-child) {
+    margin-top: $padding;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: $padding;
+  }
+}
+
+.conversation:not(.expanded):last-child > .main-tweet > .tweet {
+  @include rounded-bottom;
+}

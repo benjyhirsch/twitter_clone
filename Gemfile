@@ -13,11 +13,13 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 gem 'bcrypt', '~> 3.1.7'
 gem 'figaro'
-gem 'rails-timeago'
+gem 'momentjs-rails'
 gem 'bourbon'
 gem 'font-awesome-sass'
 gem 'backbone-on-rails'
 gem 'ejs'
+gem 'serialize_json-rails'
+gem 'filepicker-rails'
 
 group :development do
   gem 'better_errors'

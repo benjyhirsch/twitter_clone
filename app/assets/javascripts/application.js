@@ -12,10 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require rails-timeago
+//= require moment
+//= require livestamp.min
 //= require underscore
 //= require backbone
+//= require serialize_json
 //= require twitter_clone
+//= require_tree ./utils
 //= require_tree ../templates
 //= require_tree ./models
 //= require_tree ./collections

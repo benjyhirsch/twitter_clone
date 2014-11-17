@@ -1,5 +1,6 @@
 $logo-color: rgb(85, 172, 238);
 $link-color: #0084b4;
+$red: #f00;
 
 $main-button-bg: rgb(51, 156, 195);
 $main-button-bg-hover: linear-gradient(to bottom, rgb(0,130, 178), rgb(0,112,153));
@@ -41,8 +42,20 @@ $navbar-height: 46px;
 $navbar-vertical-padding: 7px;
 $navbar-line-height: $navbar-height - 2 * $navbar-vertical-padding;
 
+$tweet-form-controls-height: 40px;
+
 $border-radius: 5px;
 
 @mixin box-shadow {
   box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+
+@mixin rounded-top {
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+}
+
+@mixin rounded-bottom {
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
 }

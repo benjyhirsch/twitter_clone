@@ -6,17 +6,23 @@ class RetweetsController < ApplicationController
   def create
     tweet_id = params[:tweeting][:tweet_id]
     @retweet = Tweeting.new(user: current_user, tweet_id: tweet_id)
-    @retweet.save
-    redirect_to tweet_url(tweet_id)
+    if @retweet.save
+      render json: @retweet
+    else
+      render json: @retweet.errors, status: :unprocessable_entity
+    end
   end
 
   def destroy
     @retweet = Tweeting.includes(:tweet).find(params[:id])
     if current_user.id == @retweet.user_id
-      @retweet.destroy
-      redirect_to tweet_url(@retweet.tweet)
+      if @retweet.destroy
+        render json: @retweet
+      else
+        render json: @retweet.errors, status: :forbidden
+      end
     else
-      redirect_to tweet_url(@retweet.tweet)
+      render json @retweet, status: :forbidden
     end
   end
 
@@ -31,6 +37,6 @@ class RetweetsController < ApplicationController
 
   def ensure_not_original_author
     author_id = @retweet ? @retweet.tweet.author_id : @tweet.author_id
-    redirect_to root_url if !logged_in? || author_id == current_user.id
+    render nothing: true, status: :forbidden if !logged_in? || author_id == current_user.id
   end
 end

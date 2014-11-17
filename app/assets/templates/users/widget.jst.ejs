@@ -1,0 +1,6 @@
+<section class="user-info">
+  <a href="<%= '#/users/' + user.id %>" class="user-full-name"><%= user.escape("full_name") %></a>
+  <a href="<%= '#/users/' + user.id %>" class="user-username">@<%= user.escape("username") %></a>
+</section>
+<section class="user-bio"><%=user.escape("bio")%></section>
+<div class="user-widget-tweet-form"></div>

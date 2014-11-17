@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:edit, :update, :destroy]
   before_action :ensure_current_user, only: [:edit, :update, :destroy]
 
   def show
-    @feed = @user.tweets
+    @user = User.includes(:tweets).find(params[:id])
   end
 
   def new

@@ -4,7 +4,13 @@
   <title>TwitterClone</title>
   <%= stylesheet_link_tag    'application', media: 'all'%>
   <%= javascript_include_tag 'application'%>
+  <%= filepicker_js_include_tag %>
   <%= csrf_meta_tags %>
+  <script>
+    $(document).ready(function() {
+      filepicker.setKey("<%= TwitterClone::Application.config.filepicker_rails.api_key %>");
+    });
+  </script>
 </head>
 <body>
 <header class="navbar">
@@ -27,7 +33,7 @@
           </ul>
         </li>
         <li>
-          <button class="tweet-button">Tweet</button>
+          <button class="main-button">Tweet</button>
         </li>
       <% else %>
       <li><a href="<%= new_session_url %>">Sign In</a></li>

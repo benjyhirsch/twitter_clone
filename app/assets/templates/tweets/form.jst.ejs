@@ -1,0 +1,13 @@
+<% if (tweet.get("conversation_parent_id")) {%>
+  <input type="hidden" name="tweet[conversation_parent_id]" value="<%= tweet.get("conversation_parent_id") %>">
+<% } %>
+<textarea name="tweet[content]" placeholder="<%= placeholderText %>"></textarea>
+<div class="controls">
+  <ul class="left-controls">
+    <li><input type="filepicker" data-fp-button-text="Add photo" data-fp-mimetype="image/*" name="tweet[image_url]"></li>
+  </ul>
+  <ul class="right-controls">
+    <li class="chars-remaining"><%= 140 - tweet.escape("content").length %></li>
+    <li><button class="main-button">Tweet</button></li>
+  </ul>
+</div>

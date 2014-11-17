@@ -26,14 +26,7 @@ class User < ActiveRecord::Base
   has_many :followers, through: :follows_as_followee, source: :follower
 
   has_many :tweetings, inverse_of: :user
-  has_many :root_tweetings,
-    -> { joins("INNER JOIN tweets ON tweets.id = tweetings.tweet_id AS tweets")
-          .where("tweets.conversation_root_id=tweets.id") },
-    class_name: "Tweeting",
-    inverse_of: "user"
-
-  has_many :tweets_and_replies, through: :tweetings, source: :tweet
-  has_many :tweets, through: :root_tweetings
+  has_many :tweets, through: :tweetings, source: :tweet
 
   has_many :favorites, inverse_of: :user
   has_many :favorited_tweets, through: :favorites, source: :tweet
@@ -54,12 +47,8 @@ class User < ActiveRecord::Base
 
   attr_reader :password
 
-  def feed_tweetings
-    Tweeting.where(user: followees + [self])
-  end
-
   def feed
-    feed_tweetings.includes(tweet: :tweetings, tweet: :favorites).map(&:tweet)
+    Tweeting.includes(tweet: [:favorites, :author, {tweetings: :user}]).where(user: [self] + followees).map(&:tweet)
   end
 
   def password=(password)

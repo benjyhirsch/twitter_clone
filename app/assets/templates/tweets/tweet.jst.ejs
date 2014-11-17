@@ -1,0 +1,19 @@
+<% author = tweet.author %>
+
+<header>
+<a class="tweet-author-info" href="<%= '#/users/' + author.id %>"><strong><%= author.escape("full_name") %></strong>
+  <small>@<%= author.escape("username") %></small></a>
+  <small>&middot;
+    <a class="tweet-timestamp" href=<%= "#/tweets/" + tweet.id %>><time data-livestamp="<%= tweet.timestamp().toISOString() %>"%><%= tweet.timestamp().toDateString()%></time></a></small>
+</header>
+<div class="tweet-content"><%= tweet.escape("content") %></div>
+<% if (tweet.get("image_url")) {%>
+  <figure class="tweet-figure"><img class="tweet-img" src="<%= tweet.get("image_url") %>"></figure>
+<%}%>
+<footer>
+  <% if (tweet.get("num_retweets") > 0 || tweet.get("author_id") != TwitterClone.currentUser.id)  %>
+    <button<%=(tweet.get("author_id") === TwitterClone.currentUser.id) ? " disabled" : "" %> class="transparent-button retweet-button<%= tweet.get("retweeted") ? " retweeted" : ""%>"><i class="fa fa-retweet"></i><%= tweet.get("num_retweets") || "" %></button>
+
+  <button class="transparent-button favorite-button<%=tweet.get("favorited") ? " favorited" : ""%>"><i class="fa fa-star"></i><%= tweet.get("num_favorites") || "" %></button>
+</footer>
+

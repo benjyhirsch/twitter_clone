@@ -1,10 +1,13 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
 body {
   font-family: $helvetica;
   font-size: $base-font-size;
   line-height: em(20);
-  padding-top: $navbar-height;
-  border-top: 1px solid rgba(0,0,0,0.05);
-  background: $main-bg-color;
 }
 
 a {
@@ -34,4 +37,10 @@ textarea, input[type="text"], input[type="password"] {
   padding: 8px;
   height: 37px;
   border: 1px solid $border-color;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
