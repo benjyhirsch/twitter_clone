@@ -1,6 +1,6 @@
 <% author = tweet.author %>
-
-<header>
+<img class="tweet-avatar" src="<%=author.get("avatar_url")%>">
+<header class="tweet-header">
 <a class="tweet-author-info" href="<%= '#/users/' + author.id %>"><strong><%= author.escape("full_name") %></strong>
   <small>@<%= author.escape("username") %></small></a>
   <small>&middot;

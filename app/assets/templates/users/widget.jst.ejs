@@ -1,4 +1,6 @@
+<div class="user-widget-header-image-container"><img class="header-image" src="<%= user.get("header_image_url")%>"></div>
 <section class="user-info">
+  <img class="user-widget-avatar" src="<%= user.get("avatar_url")%>">
   <a href="<%= '#/users/' + user.id %>" class="user-full-name"><%= user.escape("full_name") %></a>
   <a href="<%= '#/users/' + user.id %>" class="user-username">@<%= user.escape("username") %></a>
 </section>

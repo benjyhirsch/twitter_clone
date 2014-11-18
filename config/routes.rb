@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
   namespace :api do
     resources :users, only: [:show, :create, :update, :destroy] do
-      resources :tweets, only: [:index]
-      resources :followers, only: [:index]
-      resources :followees, only: [:index]
-      resources :favorites, only: [:index]
       resource :follow, only: [:create, :destroy]
     end
 

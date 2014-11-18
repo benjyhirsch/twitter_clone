@@ -9,7 +9,7 @@ class Api::TweetsController < ApplicationController
   end
 
   def show
-    @tweet = Tweet.includes(:author, :conversation_parent).find(params[:id])
+    @tweet = Tweet.includes(:author, :conversation_parent, :conversation_relatives).find(params[:id])
   end
 
   private
